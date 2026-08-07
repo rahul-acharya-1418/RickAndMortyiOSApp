@@ -10,7 +10,7 @@ import Foundation
 /// Object that represent a singlet API call
 final class RMRequest {
     /// API Constants
-    private struct constant {
+    private struct Constants {
         static let baseUrl = "https://rickandmortyapi.com/api"
     }
     
@@ -18,14 +18,14 @@ final class RMRequest {
     private let endpoint: RMEndpoint
     
     /// Path components for API, if any
-    private let pathComponent: Set<String>
+    private let pathComponent: [String]
     
     /// Query parameters for API, if any
     private let queryParameters: [URLQueryItem]
     
     /// Constructed url for the api request in string formate
     private var urlString: String {
-        var string = constant.baseUrl
+        var string = Constants.baseUrl
         
         string += "/"
         string += endpoint.rawValue
@@ -68,11 +68,64 @@ final class RMRequest {
     ///   - queryParameters: collection of query parameters
     public init(
         endpoint: RMEndpoint,
-        pathComponent: Set<String> = [],
+        pathComponent: [String] = [],
         queryParameters: [URLQueryItem] = []
     ) {
         self.endpoint = endpoint
         self.pathComponent = pathComponent
         self.queryParameters = queryParameters
     }
+    
+    convenience init?(url: URL) {
+        let string = url.absoluteString
+        if !string.contains(Constants.baseUrl) {
+            return nil
+        }
+        
+        let trimmed = string.replacingOccurrences(of: Constants.baseUrl+"/", with: "")
+        
+        if trimmed.contains("/") {
+            let components = trimmed.components(separatedBy: "/")
+            if !components.isEmpty {
+                let endpointString = components[0]
+                if let rmEndpoint = RMEndpoint(rawValue: endpointString) {
+                    self.init(endpoint: rmEndpoint)
+                    return
+                }
+            }
+        }else if trimmed.contains("?") {
+            let components = trimmed.components(separatedBy: "?")
+            if !components.isEmpty, components.count >= 2 {
+                let endpointString = components[0]
+                let queryItemsString = components[1]
+                
+                let queryItems: [URLQueryItem] = queryItemsString.components(separatedBy: "&").compactMap(
+                    {
+                        guard $0.contains("=") else {
+                            return nil
+                        }
+                        
+                        let parts = $0.components(separatedBy: "=")
+                        
+                        
+                        return URLQueryItem(
+                            name: parts[0],
+                            value: parts[1]
+                        )
+                    })
+                
+                
+                if let rmEndpoint = RMEndpoint(rawValue: endpointString) {
+                    self.init(endpoint: rmEndpoint, queryParameters: queryItems)
+                    return
+                }
+            }
+        }
+        
+        return nil
+    }
+}
+
+extension RMRequest {
+    static let listCharactersRequests = RMRequest(endpoint: .character)
 }
