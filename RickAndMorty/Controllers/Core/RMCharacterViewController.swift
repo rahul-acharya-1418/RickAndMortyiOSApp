@@ -26,7 +26,7 @@ final class RMCharacterViewController: UIViewController, RMCharacterListViewDele
             characterListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             characterListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             characterListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            characterListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            characterListView.bottomAnchor.constraint(equalTo: view.superview?.bottomAnchor ?? view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -37,6 +37,7 @@ final class RMCharacterViewController: UIViewController, RMCharacterListViewDele
         let viewModel = RMCharacterDetailViewViewModel(character: character)
         let detailVC = RMCharacterDetailViewController(viewModel: viewModel)
         detailVC.navigationItem.largeTitleDisplayMode = .never
+//        detailVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

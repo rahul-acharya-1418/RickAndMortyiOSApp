@@ -12,8 +12,47 @@ final class RMTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .clear
+        configureTabBar()
         setUpTabs()
+    }
+    
+    
+    private func configureTabBar() {
+//
+//        let appearance = UITabBarAppearance()
+//
+//        appearance.configureWithTransparentBackground()
+//        appearance.backgroundColor = .clear
+//        appearance.backgroundEffect = nil
+//        appearance.shadowColor = .clear
+//
+//        tabBar.standardAppearance = appearance
+//        tabBar.scrollEdgeAppearance = appearance
+//        tabBar.backgroundColor = .clear
+//        tabBar.barTintColor = .clear
+//
+//        tabBar.isTranslucent = true
+        
+        if #available(iOS 26.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundColor = .clear
+            appearance.backgroundEffect = nil
+            appearance.shadowColor = .clear
+
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = appearance
+
+            tabBar.isTranslucent = true
+            tabBar.backgroundColor = .clear
+            tabBar.barTintColor = .clear
+        } else {
+            tabBar.isTranslucent = true
+            tabBar.backgroundImage = UIImage()
+            tabBar.shadowImage = UIImage()
+            tabBar.backgroundColor = .clear
+        }
     }
     
     private func setUpTabs() {
