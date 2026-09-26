@@ -36,7 +36,6 @@ final class RMService {
             return
         }
         
-        print("Api call: \(request.url?.absoluteString)")
         
         let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
             guard let data = data, error == nil else {

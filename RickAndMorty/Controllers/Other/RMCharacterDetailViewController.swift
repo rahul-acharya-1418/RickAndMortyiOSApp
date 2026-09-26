@@ -102,7 +102,6 @@ extension RMCharacterDetailViewController: UICollectionViewDelegate, UICollectio
                 fatalError("Unsupported")
             }
             cell.configure(with: viewModel)
-            cell.backgroundColor = .systemYellow
             return cell
         case .information(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(
@@ -112,7 +111,6 @@ extension RMCharacterDetailViewController: UICollectionViewDelegate, UICollectio
                 fatalError("Unsupported")
             }
             cell.configure(with: viewModels[indexPath.row])
-            cell.backgroundColor = .systemRed
             return cell
             
         case .episodes(let viewModels):
@@ -122,9 +120,22 @@ extension RMCharacterDetailViewController: UICollectionViewDelegate, UICollectio
             ) as? RMCharacterEpisodeCollectionViewCell else {
                 fatalError("Unsupported")
             }
-            cell.configure(with: viewModels[indexPath.row])
-            cell.backgroundColor = .systemOrange
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = viewModel.sections[indexPath.section]
+        switch sectionType {
+        case .photo, .information:
+            break
+        case .episodes:
+            let episodes = self.viewModel.episodes
+            let selection = episodes[indexPath.row]
+            let vc = RMEpisodeDetailViewController(url: URL(string: selection))
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

@@ -11,6 +11,10 @@ final class RMCharacterDetailViewViewModel {
     
     private let character: RMCharacter
     
+    public var episodes: [String] {
+        character.episode
+    }
+    
     enum SectionType {
         case photo(viewModel: RMCharacterPhotoCollectionViewCellViewModel)
         
@@ -30,33 +34,25 @@ final class RMCharacterDetailViewViewModel {
     
     private func setUpSections() {
         /*
-         let species: String
-         let type: String
-         let gender: RMCharacterGender
          let origin: RMOrigin
          let location: RMSingeLocation
-         let image: String
-         let episode: [String]
-         let url: String
          let created: String
          */
         sections = [
             .photo(viewModel: .init(imageUrl: URL(string: character.image))),
             .information(viewmodels: [
-                .init(value: "", title: "Status"),
-                .init(value: "", title: "Gender"),
-                .init(value: "", title: "Gender"),
-                .init(value: "", title: "Gender"),
-                .init(value: "", title: "Gender"),
-                .init(value: "", title: "Gender"),
+                .init(type: .status, value: character.status.text),
+                .init(type: .gender, value: character.gender.rawValue),
+                .init(type: .type, value: character.type),
+                .init(type: .species, value: character.species),
+                .init(type: .origin, value: character.origin.name),
+                .init(type: .location, value: character.location.name),
+                .init(type: .created, value: character.created),
+                .init(type: .episodeCount, value: String(character.episode.count)),
             ]),
-            .episodes(viewmodels: [
-                .init(),
-                .init(),
-                .init(),
-                .init(),
-            ])
-            
+            .episodes(viewmodels: character.episode.compactMap({
+                return RMCharacterEpisodeCollectionViewCellViewModel(episodeDataUrl: URL(string: $0))
+            }))
         ]
     }
     
@@ -134,9 +130,9 @@ final class RMCharacterDetailViewViewModel {
         )
         item.contentInsets = NSDirectionalEdgeInsets(
             top: 10,
-            leading: 10,
+            leading: 5,
             bottom: 10,
-            trailing: 10
+            trailing: 8
         )
         
         let group = NSCollectionLayoutGroup.horizontal(
@@ -147,7 +143,7 @@ final class RMCharacterDetailViewViewModel {
             subitems: [item]
         )
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .paging
+        section.orthogonalScrollingBehavior = .groupPaging
         return section
     }
 }
