@@ -15,7 +15,7 @@ final class RMRequest {
     }
     
     /// Desired endpoints
-    private let endpoint: RMEndpoint
+    let endpoint: RMEndpoint
     
     /// Path components for API, if any
     private let pathComponent: [String]
@@ -135,4 +135,6 @@ final class RMRequest {
 
 extension RMRequest {
     static let listCharactersRequests = RMRequest(endpoint: .character)
+    static let listEpisodesRequests = RMRequest(endpoint: .episode)
+    static let listLocationRequests = RMRequest(endpoint: .location)
 }

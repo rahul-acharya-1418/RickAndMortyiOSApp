@@ -1,0 +1,53 @@
+#  Memory
+- 35 -> 00:00
+- use final in every class
+- in clouse call back use [weak self] for memory management
+- 
+
+# Learn
+- private(set)
+- final
+- mvvm
+- OOPs
+- static
+- struct vs class
+- initializer
+- delegate protocol
+- closure
+- higer order
+- generic functions
+- error handling
+- memory management
+- app, view, viewcontroller lifecycles
+- nav, tab
+- access controll
+- enum
+- frozen
+- didset
+- extension
+- let var
+- weak strong
+- UIViewController
+- UIView
+- UITableView / UICollectionView
+- Auto Layout
+- navigation controller
+- UIBarButtonItem
+- delegates
+- data sources
+- computed properties
+- property observers
+- URL
+- URLRequest
+- URLSession
+- Codable
+- async/await
+- HTTP status codes
+- pagination
+- errors
+- Dependency Injection
+- Encapsulation
+- Protocol-oriented design
+- Separation of concerns
+- Composition
+- Repository/Service patterns
