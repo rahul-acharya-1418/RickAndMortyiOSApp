@@ -32,8 +32,13 @@ final class RMLocationViewViewModel {
     
     public private(set) var cellViewModels: [RMLocationTableViewCellViewModel] = []
     
-    init() {
-        
+    init() { }
+    
+    public func location(at index: Int) -> RMLocation? {
+        guard locations.indices.contains(index) else {
+            return nil
+        }
+        return self.locations[index]
     }
     
     public func fetchLocation() {

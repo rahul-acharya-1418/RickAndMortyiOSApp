@@ -6,8 +6,13 @@
 //
 
 import UIKit
+protocol RMLocationViewDelegate: AnyObject {
+    func rmLocationView(_ locationView: RMLocationView, didSelect location: RMLocation)
+}
 
 class RMLocationView: UIView {
+    
+    public weak var delegate: RMLocationViewDelegate?
     
     private var viewModel: RMLocationViewViewModel? {
         didSet {
@@ -21,7 +26,7 @@ class RMLocationView: UIView {
     }
     
     private let tableView: UITableView = {
-       let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.alpha = 0
         tableView.isHidden = true
@@ -79,7 +84,18 @@ class RMLocationView: UIView {
 
 extension RMLocationView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Notify controller of selection
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let locationModel = viewModel?.location(at: indexPath.row) else {
+            return
+        }
+        delegate?.rmLocationView(
+            self,
+            didSelect: locationModel
+        )
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
 }
 
@@ -100,7 +116,7 @@ extension RMLocationView: UITableViewDataSource {
             fatalError()
         }
         let cellViewModel = cellViewModels[indexPath.row]
-        cell.textLabel?.text = cellViewModel.name
+        cell.configure(with: cellViewModel)
         return cell
     }
 }

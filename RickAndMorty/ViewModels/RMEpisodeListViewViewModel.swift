@@ -35,7 +35,6 @@ final class RMEpisodeListViewViewModel: NSObject {
     
     private var episodes: [RMEpisode] = [] {
         didSet {
-            print("Creating viewModel")
             for episode in episodes {
                 let viewModel = RMCharacterEpisodeCollectionViewCellViewModel(
                     episodeDataUrl: URL(string: episode.url),
