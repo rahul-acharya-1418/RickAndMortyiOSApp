@@ -22,12 +22,12 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewModelD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        primaryView.delegate = self
         view.addSubview(primaryView)
         view.backgroundColor = .systemBackground
         title = "Locations"
         addSearchButton()
         addConstrains()
+        primaryView.delegate = self
         viewModel.delegate = self
         viewModel.fetchLocation()
     }
@@ -51,7 +51,9 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewModelD
     
     @objc
     private func didTapSearch() {
-        
+        let vc = RMSearchViewController(config: .init(type: .location))
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - RMLocationView Delegate
