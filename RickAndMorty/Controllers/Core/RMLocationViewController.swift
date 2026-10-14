@@ -14,9 +14,9 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewModelD
     
     private let viewModel = RMLocationViewViewModel()
     /// you can use below method as well to assign primary view
-    //    override func loadView() {
-    //        view = RMLocationView()
-    //    }
+//        override func loadView() {
+//            view = RMLocationView()
+//        }
     
     // MARK: - LifeCycle
     
