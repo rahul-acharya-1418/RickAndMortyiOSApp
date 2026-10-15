@@ -1,5 +1,5 @@
 #  Memory
-- 44 -> 00:00
+- 46 -> 00:00
 - use final in every class
 - in clouse call back use [weak self] for memory management
 - 
@@ -13,6 +13,8 @@
 - struct vs class
 - initializer
 - delegate protocol
+- get protocol
+- associatedtype protocol
 - closure
 - higer order
 - generic functions
