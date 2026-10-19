@@ -16,11 +16,14 @@ final class RMSearchViewViewModel {
     let config: RMSearchViewController.Config
     private var optionsMap: [RMSearchInputViewViewModel.DynamicOption: String] = [:]
     private var searchText = ""
+    
     private var optionsMapUpdateBlock: (((RMSearchInputViewViewModel.DynamicOption, String)) -> Void)?
     
     private var searchResultHandler:((RMSearchResultViewModel) -> Void)?
+    
     private var noSearchResultHandler:(() -> Void)?
     
+    private var searchResultModel: Codable?
     // MARK: - Init
     
     init(config: RMSearchViewController.Config) {
@@ -121,6 +124,7 @@ final class RMSearchViewViewModel {
         }
         
         if let resultsVM {
+            self.searchResultModel = model
             self.searchResultHandler?(resultsVM)
         } else {
             self.handleNoResults()
@@ -129,5 +133,12 @@ final class RMSearchViewViewModel {
     
     private func handleNoResults() {
         noSearchResultHandler?()
+    }
+    
+    public func locationSearchResult(at index: Int) -> RMLocation? {
+        guard let searchModel = searchResultModel as? RMGetAllLocationsResponse else {
+            return nil
+        }
+        return searchModel.results[index]
     }
 }

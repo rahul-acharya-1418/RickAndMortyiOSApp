@@ -1,5 +1,5 @@
 #  Memory
-- 48 -> 00:00
+- 51 -> 00:00
 - use final in every class
 - in clouse call back use [weak self] for memory management
 - 
@@ -53,3 +53,6 @@
 - Separation of concerns
 - Composition
 - Repository/Service patterns
+- any, some, anyobject
+- get set, didset
+- is, as?
