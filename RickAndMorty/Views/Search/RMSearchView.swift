@@ -15,7 +15,7 @@ class RMSearchView: UIView {
     
     weak var delegate: RMSearchViewDelegate?
     
-   private let viewModel: RMSearchViewViewModel
+    private let viewModel: RMSearchViewViewModel
     
     // MARK: - Subviews
     
@@ -23,20 +23,29 @@ class RMSearchView: UIView {
     
     private let noResultView = RMNoSearchResultsView()
     
+    private let resultView = RMSearchResultView()
+    
     // Results collectionView
     
     // MARK: - Init
-
+    
     init(frame: CGRect, viewModel: RMSearchViewViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
         backgroundColor = .systemBackground
         translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(noResultView, searchInputView)
+        addSubviews(resultView, noResultView, searchInputView)
         addConstraints()
         searchInputView.configure(with: RMSearchInputViewViewModel(type: viewModel.config.type))
         searchInputView.delegate = self
-        
+        setUpHandlers()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    private func setUpHandlers() {
         viewModel.registerOptionChangeBlock { tuple in
             print(String(describing: tuple))
             self.searchInputView.update(
@@ -45,13 +54,22 @@ class RMSearchView: UIView {
             )
         }
         
-        viewModel.registerSearchResultHandler { results in
-            print(results)
+        viewModel.registerSearchResultHandler { [weak self] results in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.resultView.configure(with: results)
+                self.noResultView.isHidden = true
+                self.resultView.isHidden = false
+            }
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
+        
+        viewModel.registerNoSearchResultHandler { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.noResultView.isHidden = false
+                self.resultView.isHidden = true
+            }
+        }
     }
     
     private func addConstraints() {
@@ -61,6 +79,11 @@ class RMSearchView: UIView {
             searchInputView.leftAnchor.constraint(equalTo: leftAnchor),
             searchInputView.rightAnchor.constraint(equalTo: rightAnchor),
             searchInputView.heightAnchor.constraint(equalToConstant: viewModel.config.type == .episode ? 55 : 110),
+            
+            resultView.topAnchor.constraint(equalTo: searchInputView.bottomAnchor),
+            resultView.leftAnchor.constraint(equalTo: leftAnchor),
+            resultView.rightAnchor.constraint(equalTo: rightAnchor),
+            resultView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             // No results
             noResultView.widthAnchor.constraint(equalToConstant: 150),

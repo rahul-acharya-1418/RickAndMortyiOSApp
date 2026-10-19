@@ -1,5 +1,5 @@
 #  Memory
-- 46 -> 00:00
+- 48 -> 00:00
 - use final in every class
 - in clouse call back use [weak self] for memory management
 - 

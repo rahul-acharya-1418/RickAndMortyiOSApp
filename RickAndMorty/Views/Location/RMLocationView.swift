@@ -31,7 +31,7 @@ class RMLocationView: UIView {
         tableView.alpha = 0
         tableView.isHidden = true
         tableView.register(RMLocationTableViewCell.self,
-                           forCellReuseIdentifier: "RMLocationTableViewCell")
+                           forCellReuseIdentifier: RMLocationTableViewCell.cellIdentifier)
         return tableView
     }()
     
