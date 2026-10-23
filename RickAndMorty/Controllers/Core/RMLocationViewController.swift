@@ -19,7 +19,6 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewModelD
 //        }
     
     // MARK: - LifeCycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(primaryView)
@@ -45,7 +44,7 @@ final class RMLocationViewController: UIViewController, RMLocationViewViewModelD
             primaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             primaryView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             primaryView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor ),
+            primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ]))
     }
     

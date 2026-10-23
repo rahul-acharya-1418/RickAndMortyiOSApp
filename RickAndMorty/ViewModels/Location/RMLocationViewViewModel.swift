@@ -32,7 +32,67 @@ final class RMLocationViewViewModel {
     
     public private(set) var cellViewModels: [RMLocationTableViewCellViewModel] = []
     
+    public var shouldShowLoadMoreIndicator: Bool {
+        return apiInfo?.next != nil
+    }
+    
+    public var isLoadinMoreLocation: Bool = false
+    
+    private var didFinishPagination: (() -> Void)?
+    
+    // MARK: - Init
+    
     init() { }
+    
+    public func registerDidFinishPaginationBlock(_ block: @escaping () -> Void) {
+        self.didFinishPagination = block
+    }
+    
+    /// Paginate if additional location are needed
+    public func fetchAdditionalLocations() {
+        
+        guard !isLoadinMoreLocation else {
+            return
+        }
+        
+        
+        guard let nextUrlString = apiInfo?.next,
+              let url = URL(string: nextUrlString) else {
+            return
+        }
+        
+        isLoadinMoreLocation = true
+        
+        guard let request = RMRequest(url: url) else {
+            print("Failed to create request")
+            return
+        }
+        // fetch character here
+        print("we are fetching more data")
+        RMService.shared.execute(request, expecting: RMGetAllLocationsResponse.self) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let responseModel):
+                let moreResult = responseModel.results
+                let info = responseModel.info
+                print("More locations: \(moreResult.count)")
+                self.apiInfo = info
+                self.cellViewModels.append(contentsOf: moreResult.compactMap({
+                    return RMLocationTableViewCellViewModel(location: $0)
+                }))
+                
+                DispatchQueue.main.async {
+                    self.isLoadinMoreLocation = false
+                    
+                    // Notify via callback
+                    self.didFinishPagination?()
+                }
+            case .failure(let failure):
+                print(String(describing: failure))
+                self.isLoadinMoreLocation = false
+            }
+        }
+    }
     
     public func location(at index: Int) -> RMLocation? {
         guard locations.indices.contains(index) else {
@@ -55,6 +115,7 @@ final class RMLocationViewViewModel {
                     self.delegate?.didFetchInitialLocations()
                 }
             case .failure(let error):
+                // TODO: - Handle error
                 break
             }
         }

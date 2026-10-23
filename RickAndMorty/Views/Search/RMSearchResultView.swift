@@ -92,13 +92,13 @@ class RMSearchResultView: UIView {
     }
     
     private func setUpTableView(viewModels: [RMLocationTableViewCellViewModel]) {
-        self.tableView.isHidden = false
-        self.collectionView.isHidden = true
+        tableView.isHidden = false
+        collectionView.isHidden = true
         tableView.isHidden = false
         tableView.alpha = 1
         tableView.delegate = self
         tableView.dataSource = self
-        self.locationCellViewModels = viewModels
+        locationCellViewModels = viewModels
         tableView.reloadData()
     }
     
