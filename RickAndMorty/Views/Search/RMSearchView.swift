@@ -57,10 +57,10 @@ class RMSearchView: UIView {
             )
         }
         
-        viewModel.registerSearchResultHandler { [weak self] results in
+        viewModel.registerSearchResultHandler { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
-                self.resultView.configure(with: results)
+                self.resultView.configure(with: result)
                 self.noResultView.isHidden = true
                 self.resultView.isHidden = false
             }

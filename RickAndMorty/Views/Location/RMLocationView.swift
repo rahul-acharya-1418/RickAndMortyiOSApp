@@ -133,6 +133,8 @@ extension RMLocationView: UITableViewDataSource {
     }
 }
 
+// MARK: - ScrollViewDelegate
+
 extension RMLocationView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let viewModel = viewModel ,
@@ -159,7 +161,9 @@ extension RMLocationView: UIScrollViewDelegate {
     }
     
     private func showLoadingIndicator() {
-        guard !isFooterAdded else {
+        guard let viewModel = viewModel,
+              !isFooterAdded,
+              viewModel.shouldShowLoadMoreIndicator else {
             return
         }
         isFooterAdded = true

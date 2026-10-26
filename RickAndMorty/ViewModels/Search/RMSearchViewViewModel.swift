@@ -57,6 +57,11 @@ final class RMSearchViewViewModel {
     }
     
     public func executeSearch() {
+        
+        guard !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        
         // Test Search
         var queryParams: [URLQueryItem] = [
             URLQueryItem(
@@ -103,7 +108,8 @@ final class RMSearchViewViewModel {
     }
     
     private func processSearchResults(model: Codable) {
-        var resultsVM: RMSearchResultViewModel?
+        var resultsVM: RMSearchResultType?
+        var nextUrl: String?
         if let characterResults = model as? RMGetAllCharactersResponse {
             resultsVM = .characters(characterResults.results.compactMap({
                 return RMCharacterCollectionViewCellViewModel(
@@ -111,21 +117,25 @@ final class RMSearchViewViewModel {
                     characterStatus: $0.status,
                     characterImageUrl: URL(string: $0.image)
                 )}))
+            nextUrl = characterResults.info.next
         }
         else if let episodeResults = model as? RMGetAllEpisodesResponse {
             resultsVM = .episodes(episodeResults.results.compactMap({
                 return RMCharacterEpisodeCollectionViewCellViewModel(episodeDataUrl: URL(string: $0.url))
             }))
+            nextUrl = episodeResults.info.next
         }
         else if let locationResults = model as? RMGetAllLocationsResponse {
             resultsVM = .locations(locationResults.results.compactMap({
                 return RMLocationTableViewCellViewModel(location: $0)
             }))
+            nextUrl = locationResults.info.next
         }
         
         if let resultsVM {
             self.searchResultModel = model
-            self.searchResultHandler?(resultsVM)
+            let vm = RMSearchResultViewModel(results: resultsVM, next: nextUrl)
+            self.searchResultHandler?(vm)
         } else {
             self.handleNoResults()
         }
