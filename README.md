@@ -32,3 +32,14 @@ https://acme-public.pki.dell.com/
 https://wcepta-pc1.dell.com/
 https://cognitive.dell.com/login.html
 ```
+- index of
+```
+https://linux.dell.com/files/
+https://dl.dell.com/manuals/Laptop/
+https://opensource.dell.com/releases/Venue_7_3740_Merrifield/developer-edition/FlashTool/fastboot/
+https://opensource.dell.com/releases/openpastures/
+https://poweredgec.dell.com/files/
+https://opensource.dell.com/releases/Scorpion/
+https://vmwaredepot.dell.com/DEL/5.1/
+site:dell.com intitle:"index of"
+```

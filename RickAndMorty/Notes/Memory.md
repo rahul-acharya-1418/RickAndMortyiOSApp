@@ -1,5 +1,5 @@
 #  Memory
-- 54 -> 13:00
+- 57 -> 00:00
 - use final in every class
 - in clouse call back use [weak self] for memory management
 - 
@@ -56,3 +56,31 @@
 - any, some, anyobject
 - get set, didset
 - is, as?
+
+
+# Learning
+- collection view
+- tableView
+- mvvm
+- api call
+- public private(set)
+- protocol
+- mark and todo
+- consistency naming convection
+- git, github
+- safari opening
+- pagination
+- code structure
+- cache memory
+- didset
+- registerHandler
+- uikit use without storyboard
+- higher order
+- initializer
+- dependecy injection
+- hashable
+- frozen
+- static
+- iPhone / iPad design
+- app icon
+- 

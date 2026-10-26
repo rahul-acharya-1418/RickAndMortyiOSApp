@@ -194,7 +194,7 @@ extension RMSearchResultView: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        // handle cell tap
+        //TODO: handle cell tap
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -204,8 +204,8 @@ extension RMSearchResultView: UICollectionViewDelegate, UICollectionViewDataSour
         
         if currentViewModel is RMCharacterCollectionViewCellViewModel {
             // Character size
-            let bounds = UIScreen.main.bounds
-            let width = (bounds.width - 30)/2
+
+            let width = UIDevice.isIphone ? (bounds.width - 30)/2 : (bounds.width - 50)/4
             return CGSize(
                 width: width,
                 height: width * 1.5
@@ -213,7 +213,7 @@ extension RMSearchResultView: UICollectionViewDelegate, UICollectionViewDataSour
         }
         
         // Episode size
-        let width = bounds.width - 20
+        let width = UIDevice.isIphone ? (bounds.width - 20) : (bounds.width - 50)/4
         return CGSize(
             width: width,
             height: 100
@@ -278,10 +278,17 @@ extension RMSearchResultView: UIScrollViewDelegate {
             if offSet >= (totalContentHeight - totalScrollViewFixedHeight - 120) {
                 
                 viewModel.fetchAdditionalResults { [weak self] newResults in
-                    // Refresh table
-                    self?.collectionViewCellViewModels = newResults
+                    guard let self else { return }
                     
-                    print("Should add more result cells for search results: \(newResults.count)")
+                    let originalCount = self.collectionViewCellViewModels.count
+                    let newCount = (newResults.count - originalCount)
+                    let total = newResults.count
+                    let startingIndex = total - newCount
+                    let indexPathsToAdd: [IndexPath] = Array(startingIndex..<(startingIndex+newCount)).compactMap({
+                        return IndexPath(row: $0, section: 0)
+                    })
+                    self.collectionViewCellViewModels = newResults
+                    self.collectionView.insertItems(at: indexPathsToAdd)
                 }
             }
             t.invalidate()

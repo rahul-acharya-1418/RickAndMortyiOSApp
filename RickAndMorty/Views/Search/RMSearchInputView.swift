@@ -127,7 +127,6 @@ final class RMSearchInputView: UIView {
     
     public func configure(with viewModel: RMSearchInputViewViewModel) {
         searchBar.placeholder = viewModel.searchPlaceholderText
-        // TODO: Fix height of input view for episode with no option
         self.viewModel = viewModel
     }
     

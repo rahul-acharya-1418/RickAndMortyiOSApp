@@ -149,12 +149,10 @@ extension RMCharacterListViewViewModel: UICollectionViewDataSource, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // TODO: - Abstract to extension
-        let isIphone = UIDevice.current.userInterfaceIdiom == .phone
         let bounds = collectionView.bounds
         let width: CGFloat
         
-        if isIphone {
+        if UIDevice.isIphone {
             width = (bounds.width - 30)/2
         } else {
             // mac | iPad
@@ -181,8 +179,8 @@ extension RMCharacterListViewViewModel: UIScrollViewDelegate {
         guard shouldShowLoadMoreIndicator,
               !isLoadinMoreCharacters,
               !cellViewModels.isEmpty,
-        let nextUrlString = apiInfo?.next,
-        let url = URL(string: nextUrlString) else {
+              let nextUrlString = apiInfo?.next,
+              let url = URL(string: nextUrlString) else {
             return
         }
         
