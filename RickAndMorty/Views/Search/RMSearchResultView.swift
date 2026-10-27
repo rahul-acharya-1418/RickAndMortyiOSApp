@@ -9,6 +9,8 @@ import UIKit
 
 protocol RMSearchResultViewDelegate: AnyObject {
     func rmSearchResultView(_ resultsView: RMSearchResultView, didTapLocationAt index: Int)
+    func rmSearchResultView(_ resultsView: RMSearchResultView, didTapCharacterAt index: Int)
+    func rmSearchResultView(_ resultsView: RMSearchResultView, didTapEpisodeAt index: Int)
 }
 
 /// Shows search results UI (table or collection as needed)
@@ -36,7 +38,7 @@ class RMSearchResultView: UIView {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isHidden = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -193,8 +195,17 @@ extension RMSearchResultView: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        guard let viewModel else { return }
         
-        //TODO: handle cell tap
+        switch viewModel.results {
+        case .characters:
+            delegate?.rmSearchResultView(self, didTapCharacterAt: indexPath.row)
+        case .episodes:
+            delegate?.rmSearchResultView(self, didTapEpisodeAt: indexPath.row)
+        case .locations:
+            break
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+
+/// Interface to relay location view events
 protocol RMLocationViewDelegate: AnyObject {
     func rmLocationView(_ locationView: RMLocationView, didSelect location: RMLocation)
 }
@@ -137,7 +139,7 @@ extension RMLocationView: UITableViewDataSource {
 
 extension RMLocationView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let viewModel = viewModel ,
+        guard let viewModel = viewModel,
               !viewModel.cellViewModels.isEmpty,
               viewModel.shouldShowLoadMoreIndicator,
               !viewModel.isLoadinMoreLocation else {
@@ -174,6 +176,5 @@ extension RMLocationView: UIScrollViewDelegate {
             height: 100
         ))
         tableView.tableFooterView = footer
-        
     }
 }
